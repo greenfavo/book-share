@@ -18,13 +18,14 @@ let mainRouter = Router().loadMethods()
 let apiRouter = Router({ prefix: '/api' }).loadMethods()
 let adminRouter = Router({ prefix: '/admin' }).loadMethods()
 
+app.use(serve('./main/static', '/static'))
+
 // 路由启用
 mainRoutes(mainRouter)
 apiRoutes(apiRouter)
 adminRoutes(adminRouter)
 
 // 路由加入到中间件
-app.use(serve('./main/static', '/static'))
 app.use(mainRouter.middleware())
 app.use(apiRouter.middleware())
 app.use(adminRouter.middleware())

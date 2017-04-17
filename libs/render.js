@@ -5,7 +5,8 @@
 const fs = require('fs')
 
 const render = function render (ctx, path) {
-  const content = fs.readFileSync(path)
+  const content = fs.readFileSync(path).toString()
+
   ctx.response.body = content
 }
 

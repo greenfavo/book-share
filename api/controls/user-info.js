@@ -5,7 +5,7 @@
 
 /**
  * 获取当前用户信息的接口
- * @description 接口地址： ‘／api/user-info’
+ * @description 接口地址： GET ‘／api/user-info’
  *              接口请求成功返回：{errCode: 0, data: Object}
  *              接口失败返回：{errCode: Number, errMsg: String}
  * @param  {Object}   ctx  请求与相应上下文

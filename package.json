@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "共享图书后台服务",
   "main": "index.js",
+  "scripts": {
+    "start": "pm2 start pm2.config.json"
+  },
   "repository": "git@github.com:greenfavo/share_api.git",
   "author": "greenfavo",
   "license": "MIT",

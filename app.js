@@ -25,7 +25,7 @@ apiRoutes(apiRouter)
 adminRoutes(adminRouter)
 
 // 路由加入到中间件
-app.use(serve(path.join(__dirname, '/main/static')))
+app.use(serve(path.join(__dirname, '/main/dist')))
 app.use(mainRouter.middleware())
 app.use(apiRouter.middleware())
 app.use(adminRouter.middleware())

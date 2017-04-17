@@ -9,6 +9,7 @@ const fs = require('fs')
 const wechat = require('wechat')
 const OAuth = require('wechat-oauth')
 // 个人依赖
+const model = require('../model')
 const wechatConfig = require('../../config/wechat')
 
 // 取出 config.WECHAT 中的配置
@@ -65,9 +66,21 @@ const main = async function main (ctx, next) {
     const { openid } = await getAccessToken(code)
     // 通过 openid 获取用户信息
     const userInfo = await getUser(openid)
-    // 将用户的微信数据存到数据库里
-    const newDoc = await ctx.db.user.insert(userInfo)
-    console.log(newDoc)
+    // 判断数据库中是否有此用户
+    const userData = await ctx.db.user.findOne({ openid: openid })
+    if (userData) {
+      // 有该用户则更新其微信信息
+      await ctx.db.user.update(
+        { openid: openid },
+        {$set: userInfo}
+      )
+    } else {
+      // 没有该用户则插入用户信息
+      await ctx.db.user.insert(Object.assign(
+        model.user,
+        userInfo
+      ))
+    }
     // 将用户 openid 添加到 session
     ctx.session.openid = openid
     // 将 index.html 渲染出来

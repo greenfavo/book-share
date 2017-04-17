@@ -17,6 +17,7 @@ const { PORT, HOST, SESSION } = require('./config')
 let app = new Koa()
 let db = {}
 db.user = new Datastore()
+db.books = new Datastore()
 
 app.keys = [SESSION.key]
 

@@ -66,7 +66,8 @@ const main = async function main (ctx, next) {
     // 通过 openid 获取用户信息
     const userInfo = await getUser(openid)
     // 将用户的微信数据存到数据库里
-    ctx.db.user.insert(userInfo)
+    const newDoc = await ctx.db.user.insert(userInfo)
+    console.log(newDoc)
     // 将用户 openid 添加到 session
     ctx.session.openid = openid
     // 将 index.html 渲染出来

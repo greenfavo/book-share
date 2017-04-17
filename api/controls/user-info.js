@@ -11,9 +11,9 @@
  * @param  {Object}   ctx  请求与相应上下文
  * @param  {Function} next 下一个迭代器
  */
-const getUserInfo = function getUserInfo (ctx, next) {
+const getUserInfo = async function getUserInfo (ctx, next) {
   if (ctx.session.openid) {
-    let data = ctx.db.user.findOne({ openid: ctx.session.openid })
+    let data = await ctx.db.user.findOne({ openid: ctx.session.openid })
     ctx.response.body = JSON.stringify({
       result: 'ok',
       data: data

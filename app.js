@@ -5,7 +5,7 @@
 const path = require('path')
 const Koa = require('koa')
 const Router = require('koa-better-router')
-const Datastore = require('nedb')
+const Datastore = require('nedb-promise')
 const serve = require('koa-static')
 const session = require('koa-session')
 

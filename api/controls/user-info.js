@@ -12,7 +12,7 @@
  * @param  {Function} next 下一个迭代器
  */
 const getUserInfo = function getUserInfo (ctx, next) {
-  if (ctx.session.userInfo) {
+  if (ctx.session.openid) {
     ctx.response.body = JSON.stringify({
       errCode: 0,
       data: ctx.session.userInfo

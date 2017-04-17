@@ -62,8 +62,9 @@ const main = async function main (ctx, next) {
     const { openid } = await getAccessToken(code)
     // 通过 openid 获取用户信息
     const userInfo = await getUser(openid)
-    // 将用户信息添加到 session
-    ctx.session.userInfo = userInfo
+    console.log(userInfo)
+    // 将用户 openid 添加到 session
+    ctx.session.openid = openid
     // 重定向到主页
     ctx.response.redirect('/index.html')
   } else if (state) {

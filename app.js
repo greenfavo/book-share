@@ -4,6 +4,7 @@
  */
 const Koa = require('koa')
 const Router = require('koa-better-router')
+const serve = require('koa-better-serve')
 
 const mainRoutes = require('./main/routes')
 const apiRoutes = require('./api/routes')
@@ -23,6 +24,7 @@ apiRoutes(apiRouter)
 adminRoutes(adminRouter)
 
 // 路由加入到中间件
+app.use(serve('./main/statics', '/statics'))
 app.use(mainRouter.middleware())
 app.use(apiRouter.middleware())
 app.use(adminRouter.middleware())

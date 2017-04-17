@@ -8,7 +8,7 @@ const Router = require('koa-better-router')
 const mainRoutes = require('./main/routes')
 const apiRoutes = require('./api/routes')
 const adminRoutes = require('./admin/routes')
-const { PORT } = require('./config')
+const { PORT, HOST } = require('./config')
 
 let app = new Koa()
 
@@ -28,4 +28,4 @@ app.use(apiRouter.middleware())
 app.use(adminRouter.middleware())
 
 // 启动服务器
-app.listen(PORT, () => console.log('服务器启动在' + PORT + '端口'))
+app.listen(PORT, HOST, () => console.log('服务器启动在' + PORT + '端口'))

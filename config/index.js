@@ -4,5 +4,6 @@
  */
 
 module.exports = {
-  PORT: '8080'
+  PORT: '8080',
+  HOST: '0.0.0.0'
 }

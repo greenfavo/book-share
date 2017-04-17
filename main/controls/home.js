@@ -7,7 +7,7 @@ const path = require('path')
 const wechat = require('wechat')
 const OAuth = require('wechat-oauth')
 // 个人依赖
-const render = require('../../render')
+const render = require('../../libs/render')
 const wechatConfig = require('../../config/wechat')
 
 // 取出 config.WECHAT 中的配置

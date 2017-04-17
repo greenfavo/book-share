@@ -5,5 +5,8 @@
 
 module.exports = {
   PORT: '8080',
-  HOST: '0.0.0.0'
+  HOST: '0.0.0.0',
+  SESSION: {
+    key: 'koa-book-share'
+  }
 }

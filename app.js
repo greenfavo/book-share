@@ -5,6 +5,7 @@
 const path = require('path')
 const Koa = require('koa')
 const Router = require('koa-better-router')
+const Datastore = require('nedb')
 const serve = require('koa-static')
 const session = require('koa-session')
 
@@ -14,6 +15,8 @@ const adminRoutes = require('./admin/routes')
 const { PORT, HOST, SESSION } = require('./config')
 
 let app = new Koa()
+let db = {}
+db.user = new Datastore()
 
 app.keys = [SESSION.key]
 
@@ -27,6 +30,11 @@ mainRoutes(mainRouter)
 apiRoutes(apiRouter)
 adminRoutes(adminRouter)
 
+// 将 db 加入 ctx 中
+app.use(async (ctx, next) => {
+  ctx.db = db
+  await next()
+})
 // session
 app.use(session(SESSION, app))
 // 静态服务

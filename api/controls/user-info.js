@@ -13,14 +13,15 @@
  */
 const getUserInfo = function getUserInfo (ctx, next) {
   if (ctx.session.openid) {
+    let data = ctx.db.user.findOne({ openid: ctx.session.openid })
     ctx.response.body = JSON.stringify({
-      errCode: 0,
-      data: ctx.session.openid
+      result: 'ok',
+      data: data
     })
   } else {
     ctx.response.body = JSON.stringify({
-      errCode: 300,
-      errMsg: '用户未登录'
+      result: 'fail',
+      data: '用户未登录'
     })
   }
 }

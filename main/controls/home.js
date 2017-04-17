@@ -66,7 +66,7 @@ const main = async function main (ctx, next) {
     const userInfo = await getUser(openid)
     console.log(userInfo)
     // 渲染首页
-    render(ctx, path.join(__dirname, './views/index.html'))
+    render(ctx, path.join(__dirname, '../views/index.html'))
   } else if (state) {
     // 此时说明用户授权禁止
     ctx.response.body = '请给网页授权才能正常访问'

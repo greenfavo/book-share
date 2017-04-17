@@ -2,9 +2,10 @@
  * @file    后台主文件
  * @author  greenfavo@qq.com
  */
+const path = require('path')
 const Koa = require('koa')
 const Router = require('koa-better-router')
-const serve = require('koa-better-serve')
+const serve = require('koa-static')
 
 const mainRoutes = require('./main/routes')
 const apiRoutes = require('./api/routes')
@@ -18,14 +19,13 @@ let mainRouter = Router().loadMethods()
 let apiRouter = Router({ prefix: '/api' }).loadMethods()
 let adminRouter = Router({ prefix: '/admin' }).loadMethods()
 
-app.use(serve('./main/static', '/static'))
-
 // 路由启用
 mainRoutes(mainRouter)
 apiRoutes(apiRouter)
 adminRoutes(adminRouter)
 
 // 路由加入到中间件
+app.use(serve(path.join(__dirname, '/main/static')))
 app.use(mainRouter.middleware())
 app.use(apiRouter.middleware())
 app.use(adminRouter.middleware())

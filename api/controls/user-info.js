@@ -15,7 +15,7 @@ const getUserInfo = function getUserInfo (ctx, next) {
   if (ctx.session.openid) {
     ctx.response.body = JSON.stringify({
       errCode: 0,
-      data: ctx.session.userInfo
+      data: ctx.session.openid
     })
   } else {
     ctx.response.body = JSON.stringify({

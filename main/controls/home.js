@@ -2,6 +2,9 @@
  * @file  首页的请求逻辑
  * @author  greenfavo@qq.com
  */
+// 原生库
+const path = require('path')
+const fs = require('fs')
 // 第三方库
 const wechat = require('wechat')
 const OAuth = require('wechat-oauth')
@@ -65,8 +68,9 @@ const main = async function main (ctx, next) {
     console.log(userInfo)
     // 将用户 openid 添加到 session
     ctx.session.openid = openid
-    // 重定向到主页
-    ctx.response.redirect('/index.html')
+    // 将 index.html 渲染出来
+    const indexPath = path.join(__dirname, '../index.html')
+    ctx.response.body = fs.readFileSync(indexPath).toString()
   } else if (state) {
     // 此时说明用户授权禁止
     ctx.response.body = '请给网页授权才能正常访问'

@@ -65,6 +65,8 @@ const uploadFile = function uploadFile ({prefix, key, filepath}) {
 const addImage = async function addImage (ctx, next) {
   try {
     const files = ctx.request.body.files
+    console.log(files)
+    console.log(ctx.request.body)
     const { filepath, filename } = files.file
     /**
      * 文件扩展名

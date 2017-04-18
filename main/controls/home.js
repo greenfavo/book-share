@@ -71,7 +71,7 @@ const main = async function main (ctx, next) {
     if (userData) {
       // 有该用户则更新其微信信息
       await ctx.db.user.update(
-        { openid: openid },
+        {openid: openid},
         {$set: userInfo}
       )
     } else {

@@ -64,8 +64,10 @@ const uploadFile = function uploadFile ({prefix, key, filepath}) {
  */
 const addImage = async function addImage (ctx, next) {
   try {
-    const files = ctx.request.body.files
-    console.log(files)
+    const files = ctx.request.files
+    console.log(ctx.request.files)
+    console.log(ctx.request.body.files)
+    console.log(ctx.request.body.files.file)
     console.log(ctx.request.body)
     const { filepath, filename } = files.file
     /**

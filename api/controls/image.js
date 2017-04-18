@@ -6,6 +6,9 @@ const fs = require('fs')
 const qiniu = require('qiniu')
 const config = require('../../config/qiniu.js')
 
+qiniu.conf.ACCESS_KEY = config.ACCESS_KEY
+qiniu.conf.SECRET_KEY = config.SECRET_KEY
+
 /**
  * 生成上传 Token
  * @param  {String} bucket  上传的空间
@@ -65,11 +68,8 @@ const uploadFile = function uploadFile ({prefix, key, filepath}) {
 const addImage = async function addImage (ctx, next) {
   try {
     const files = ctx.request.files
-    console.log(ctx.request.files)
-    console.log(ctx.request.body.files)
-    console.log(ctx.request.body.files.file)
-    console.log(ctx.request.body)
-    const { filepath, filename } = files.file
+    const filepath = files[0].path
+    const filename = files[0].name
     /**
      * 文件扩展名
      * @type {String}

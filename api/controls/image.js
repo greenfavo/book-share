@@ -77,13 +77,15 @@ const addImage = async function addImage (ctx, next) {
     const result = await uploadFile({prefix, key, filepath})
     ctx.response.body = {
       result: 'ok',
-      url: result.url,
-      webpUrl: result.webpUrl
+      data: {
+        url: result.url,
+        webpUrl: result.webpUrl
+      }
     }
   } catch (e) {
     ctx.response.body = {
       result: 'fail',
-      message: e
+      data: e
     }
   }
 }

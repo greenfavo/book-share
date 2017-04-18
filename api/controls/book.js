@@ -33,23 +33,43 @@ const getBookFromDouban = function getBookFromDouban (isbn) {
  * @param {Function} next 下一个迭代器
  */
 const addBook = async function addBook (ctx, next) {
+  ctx.session.openid = 'test'
   if (ctx.session.openid) {
     try {
-      await ctx.db.books.insert({
-        ISBN: ctx.request.body.ISBN,
-        name: ctx.request.body.name,
-        author: ctx.request.body.author,
-        publish: ctx.request.body.publish,
-        publishDate: ctx.request.body.publishDate,
-        summary: ctx.request.body.summary,
-        cover: ctx.request.body.cover,
-        area: ctx.request.body.area,
-        ownerId: ctx.session.openid
-      })
-      ctx.response.body = JSON.stringify({
-        result: 'ok',
-        data: '插入物品信息成功'
-      })
+      let openid = ctx.session.openid
+      let book = await ctx.db.books.findOne(
+        {
+          ownerId: openid,
+          ISBN: ctx.request.body.ISBN
+        }
+      )
+      if (book) {
+        ctx.response.body = JSON.stringify({
+          result: 'fail',
+          data: '该书已存在'
+        })
+      } else {
+        const result = await ctx.db.books.insert({
+          ISBN: ctx.request.body.ISBN,
+          name: ctx.request.body.name,
+          author: ctx.request.body.author,
+          publish: ctx.request.body.publish,
+          publishDate: ctx.request.body.publishDate,
+          summary: ctx.request.body.summary,
+          cover: ctx.request.body.cover,
+          area: ctx.request.body.area,
+          ownerId: openid
+        })
+        // 更新用户的图书集合
+        await ctx.db.user.update(
+          {openid: openid},
+          {$push: {book: result._id}}
+        )
+        ctx.response.body = JSON.stringify({
+          result: 'ok',
+          data: '插入物品信息成功'
+        })
+      }
     } catch (e) {
       ctx.response.body = JSON.stringify({
         result: 'fail',

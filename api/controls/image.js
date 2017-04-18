@@ -67,13 +67,18 @@ const uploadFile = function uploadFile ({prefix, key, filepath}) {
  */
 const addImage = async function addImage (ctx, next) {
   try {
-    const files = ctx.request.files
-    const filepath = files[0].path
-    const filename = files[0].name
+    const files = ctx.request.body.files
+    // console.log(ctx.request.files)
+    // console.log(ctx.request.body.files)
+    // console.log(ctx.request.body.files.file)
+    // console.log(ctx.request.body)
+    const filepath = files.file.path
+    const filename = files.file.name
     /**
      * 文件扩展名
      * @type {String}
      */
+    // console.log(filepath, filename)
     const extension = filename.substring(filename.lastIndexOf('.'))
     const prefix = new Date().getTime()
     const key = prefix + extension

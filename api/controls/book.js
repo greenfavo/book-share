@@ -35,6 +35,7 @@ const getBookFromDouban = function getBookFromDouban (isbn) {
 const addBook = async function addBook (ctx, next) {
   if (ctx.session.openid) {
     try {
+      console.log(ctx.request.body)
       await ctx.db.books.insert({
         ISBN: ctx.request.body.ISBN,
         name: ctx.request.body.name,

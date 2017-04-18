@@ -5,7 +5,7 @@
 const path = require('path')
 const Koa = require('koa')
 const Router = require('koa-better-router')
-const body = require('koa-better-body')
+const body = require('koa-body')
 const Datastore = require('nedb-promise')
 const serve = require('koa-static')
 const session = require('koa-session')
@@ -37,7 +37,7 @@ app.use(async (ctx, next) => {
   ctx.db = db
   await next()
 })
-app.use(body())
+app.use(body({multipart: true}))
 // session
 app.use(session(SESSION, app))
 // 静态服务

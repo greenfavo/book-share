@@ -17,6 +17,8 @@
     "koa-session": "^5.0.0",
     "koa-static": "^3.0.0",
     "nedb-promise": "^2.0.1",
+    "qiniu": "^6.1.13",
+    "request": "^2.81.0",
     "wechat": "^2.1.0",
     "wechat-oauth": "^1.2.1"
   },

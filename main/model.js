@@ -11,6 +11,6 @@ const user = {
   score: 100  // 积分
 }
 
-module.export = {
+module.exports = {
   user
 }

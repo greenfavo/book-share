@@ -76,8 +76,6 @@ const main = async function main (ctx, next) {
       )
     } else {
       // 没有该用户则插入用户信息
-      console.log(model.user)
-      console.log(userInfo)
       await ctx.db.user.insert(Object.assign(
         model.user,
         userInfo

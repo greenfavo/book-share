@@ -35,15 +35,15 @@ const getBookFromDouban = function getBookFromDouban (isbn) {
 const addBook = async function addBook (ctx, next) {
   if (ctx.session.openid) {
     try {
-      console.log(ctx.request.body)
       await ctx.db.books.insert({
         ISBN: ctx.request.body.ISBN,
         name: ctx.request.body.name,
         author: ctx.request.body.author,
         publish: ctx.request.body.publish,
-        publishDate: ctx.request.body.publish_date,
+        publishDate: ctx.request.body.publishDate,
         summary: ctx.request.body.summary,
-        cover: ctx.request.body.cover || 'http://img.baidu.com',
+        cover: ctx.request.body.cover,
+        area: ctx.request.body.area,
         ownerId: ctx.session.openid
       })
       ctx.response.body = JSON.stringify({

@@ -4,7 +4,7 @@
  */
 const { getUserInfo } = require('./controls/user-info')
 const { addUserCert, cancelUserCert } = require('./controls/cert')
-const { getBooks, addBook } = require('./controls/book')
+const { getBooks, addBook, getBookByISBN } = require('./controls/book')
 const { addImage } = require('./controls/image')
 
 const routes = function routes (router) {
@@ -12,17 +12,19 @@ const routes = function routes (router) {
   router.get('/userinfo', getUserInfo)
 
   // 用户认证
-  router.put('/cert', addUserCert)
+  router.post('/cert', addUserCert)
   // 取消用户认证
   router.delete('/cert', cancelUserCert)
 
   // 获取所有图书
   router.get('/books', getBooks)
   // 新建一本图书
-  router.put('/book', addBook)
+  router.post('/book', addBook)
+  // 通过 isbn 获取一本书
+  router.get('/book/:isbn', getBookByISBN)
 
   // 上传图片至七牛
-  router.put('/image', addImage)
+  router.post('/image', addImage)
 }
 
 module.exports = routes

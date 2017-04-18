@@ -51,7 +51,7 @@ const uploadFile = function uploadFile ({prefix, key, filepath}) {
 }
 
 /**
- * @description PUT /image  上传图片
+ * @description POST /image  上传图片
  * @module image
  * @see controls/image
  * @param {Binary} file - 二进制文件

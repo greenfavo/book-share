@@ -21,6 +21,7 @@ const general = function general (ctx, next) {
     } else {
       const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)
       ctx.response.redirect(url)
+      next()
     }
   }
 }

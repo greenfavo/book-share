@@ -10,6 +10,7 @@ const Datastore = require('nedb-promise')
 const serve = require('koa-static')
 const session = require('koa-session')
 
+const general = require('./libs/general')
 const mainRoutes = require('./main/routes')
 const apiRoutes = require('./api/routes')
 const adminRoutes = require('./admin/routes')
@@ -17,7 +18,7 @@ const { PORT, HOST, SESSION } = require('./config')
 
 let app = new Koa()
 let db = {}
-db.user = new Datastore({ filename: './database/users.db' })
+db.users = new Datastore({ filename: './database/users.db' })
 db.books = new Datastore({ filename: './database/books.db' })
 
 app.keys = [SESSION.key]
@@ -42,6 +43,7 @@ app.use(body({multipart: true}))
 app.use(session(SESSION, app))
 // 静态服务
 app.use(serve(path.join(__dirname, '/main/dist')))
+app.use(general)
 // 路由加入到中间件
 app.use(mainRouter.middleware())
 app.use(apiRouter.middleware())

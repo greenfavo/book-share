@@ -3,10 +3,14 @@
  * @author  greenfavo@qq.com
  */
 const home = require('./controls/home')
+const check = require('./controls/check')
+const oath = require('./controls/oath')
 
 const routes = function routes (router) {
-  // 首页路由请求
-  router.get('/', home)
+  // 微信接入验证
+  router.get('/', check)
+  router.get('/oath', oath)
+  router.get('/home', home)
 }
 
 module.exports = routes

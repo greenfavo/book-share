@@ -10,7 +10,7 @@ module.exports = {
    */
   APPID: 'wx2e20dc94b401d6f8',
   SECRET: 'e4e7d10cb08487a2fae908c67ac93b8b',
-  REDIRECT_URL: 'http://sharebook.sevenfan.cn:8080/',
+  REDIRECT_URL: 'http://sharebook.sevenfan.cn:8080/oauth',
   STATE: 'state',
   /**
    * 授权类型

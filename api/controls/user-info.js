@@ -12,8 +12,10 @@
  * @param  {Function} next 下一个迭代器
  */
 const getUserInfo = async function getUserInfo (ctx, next) {
-  if (ctx.session.openid) {
-    let data = await ctx.db.user.findOne({ openid: ctx.session.openid })
+  if (ctx.session.userId) {
+    let data = await ctx.db.users.findOne({ _id: ctx.session.userId })
+    data.id = data._id
+    delete data._id
     ctx.response.body = JSON.stringify({
       result: 'ok',
       data: data

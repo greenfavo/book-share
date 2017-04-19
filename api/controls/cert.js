@@ -54,35 +54,29 @@ const verify = function verify (ctx) {
  * @param {Function} next 下一个迭代器
  */
 const addUserCert = async function addUserCert (ctx, next) {
-  if (ctx.session.openid) {
-    try {
-      let isPass = await verify(ctx)
-      if (isPass) {
-        // 设置用户的 verify 字段为 true
-        await ctx.db.user.update(
-          {openid: ctx.session.openid},
-          {$set: {verify: true}}
-        )
-        ctx.response.body = JSON.stringify({
-          result: 'ok',
-          data: '学生认证成功'
-        })
-      } else {
-        ctx.response.body = JSON.stringify({
-          result: 'fail',
-          data: '学生认证失败'
-        })
-      }
-    } catch (e) {
+  let userId = ctx.session.userId
+  try {
+    let isPass = await verify(ctx)
+    if (isPass) {
+      // 设置用户的 verify 字段为 true
+      await ctx.db.users.update(
+        { _id: userId },
+        { $set: { verify: true } }
+      )
+      ctx.response.body = JSON.stringify({
+        result: 'ok',
+        data: '学生认证成功'
+      })
+    } else {
       ctx.response.body = JSON.stringify({
         result: 'fail',
-        data: '学生认证出错'
+        data: '学生认证失败'
       })
     }
-  } else {
+  } catch (e) {
     ctx.response.body = JSON.stringify({
       result: 'fail',
-      data: '用户未登录'
+      data: '学生认证出错'
     })
   }
 }
@@ -96,28 +90,20 @@ const addUserCert = async function addUserCert (ctx, next) {
  * @param  {Function} next 下一个迭代器
  */
 const cancelUserCert = async function cancelUserCert (ctx, next) {
-  if (ctx.session.openid) {
-    try {
-      await ctx.db.user.update(
-        {openid: ctx.session.openid},
-        {$set: {
-          verify: false
-        }}
-      )
-      ctx.response.body = JSON.stringify({
-        result: 'ok',
-        data: '取消用户认证成功'
-      })
-    } catch (e) {
-      ctx.response.body = JSON.stringify({
-        result: 'fail',
-        data: '取消用户认证错误'
-      })
-    }
-  } else {
+  let userId = ctx.session.userId
+  try {
+    await ctx.db.users.update(
+      { _id: userId },
+      { $set: { verify: false } }
+    )
+    ctx.response.body = JSON.stringify({
+      result: 'ok',
+      data: '取消用户认证成功'
+    })
+  } catch (e) {
     ctx.response.body = JSON.stringify({
       result: 'fail',
-      data: '用户未登录'
+      data: '取消用户认证错误'
     })
   }
 }

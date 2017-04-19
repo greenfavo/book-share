@@ -83,7 +83,6 @@ const oauth = async function oauth (ctx, next) {
       }
       // 将用户 userId 添加到 session
       ctx.session.userId = userData._id
-      console.log(ctx.session.userId)
       // 重定向到主页
       ctx.response.redirect('http://sharebook.sevenfan.cn:8080/home')
     } else {

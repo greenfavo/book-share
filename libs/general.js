@@ -14,8 +14,6 @@ const client = new OAuth(APPID, SECRET)
 
 const general = async function general (ctx, next) {
   let urlPath = ctx.request.path
-  console.log(urlPath)
-  console.log(ctx.session.userId)
   if (urlPath === '/' || urlPath === '/oauth' || ctx.session.userId) {
     await next()
   } else if (~config.ROUTES.indexOf(urlPath)) {

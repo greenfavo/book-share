@@ -63,13 +63,11 @@ const oauth = async function oauth (ctx, next) {
     if (code && state) {
       // 此时说明处于用户授权通过，就用 code 获取 openid
       const { openid } = await getAccessToken(code)
-      console.log(openid)
       // 通过 openid 获取用户信息
       const userInfo = await getUser(openid)
-      console.log(userInfo)
       // 判断数据库中是否有此用户
       let userData = await ctx.db.users.findOne({ openid: openid })
-      console.log(userData)
+      console.log('userData', userData)
       if (userData) {
         console.log('更新')
         // 有该用户则更新其微信信息

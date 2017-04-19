@@ -3,7 +3,7 @@
  * @author  greenfavo@qq.com
  */
 const OAuth = require('wechat-oauth')
-const wechatConfig = require('../../config/wechat')
+const wechatConfig = require('../config/wechat')
 
 // 取出 config.WECHAT 中的配置
 const { APPID, SECRET, REDIRECT_URL, STATE, SCOPE } = wechatConfig

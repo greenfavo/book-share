@@ -4,12 +4,12 @@
  */
 const home = require('./controls/home')
 const check = require('./controls/check')
-const oath = require('./controls/oath')
+const oauth = require('./controls/oauth')
 
 const routes = function routes (router) {
   // 微信接入验证
   router.get('/', check)
-  router.get('/oath', oath)
+  router.get('/oath', oauth)
   router.get('/home', home)
 }
 

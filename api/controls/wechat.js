@@ -65,6 +65,7 @@ const getJsSdk = async function getJsSdk (ctx, next) {
       url: url,
       ticket: ticket.ticket
     }
+    console.log(ticket.ticket)
     let config = await getJsConfig(params)
     ctx.response.body = {
       result: 'ok',

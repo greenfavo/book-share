@@ -62,30 +62,37 @@ const main = async function main (ctx, next) {
   // 获取请求的参数
   const { code, state, timestamp, nonce, signature, echostr } = ctx.request.query ? ctx.request.query : {}
   if (code && state) {
-    // 此时说明处于用户授权通过，就用 code 获取 openid
-    const { openid } = await getAccessToken(code)
-    // 通过 openid 获取用户信息
-    const userInfo = await getUser(openid)
-    // 判断数据库中是否有此用户
-    const userData = await ctx.db.user.findOne({ openid: openid })
-    if (userData) {
-      // 有该用户则更新其微信信息
-      await ctx.db.user.update(
-        {openid: openid},
-        {$set: userInfo}
-      )
-    } else {
-      // 没有该用户则插入用户信息
-      await ctx.db.user.insert(Object.assign(
-        model.user,
-        userInfo
-      ))
+    try {
+      // 此时说明处于用户授权通过，就用 code 获取 openid
+      const { openid } = await getAccessToken(code)
+      // 通过 openid 获取用户信息
+      const userInfo = await getUser(openid)
+      // 判断数据库中是否有此用户
+      const userData = await ctx.db.user.findOne({ openid: openid })
+      if (userData) {
+        // 有该用户则更新其微信信息
+        await ctx.db.user.update(
+          {openid: openid},
+          {$set: userInfo}
+        )
+      } else {
+        // 没有该用户则插入用户信息
+        await ctx.db.user.insert(Object.assign(
+          model.user,
+          userInfo
+        ))
+      }
+      // 将用户 openid 添加到 session
+      ctx.session.openid = openid
+      // 将 index.html 渲染出来
+      const indexPath = path.join(__dirname, '../index.html')
+      ctx.response.body = fs.readFileSync(indexPath).toString()
+    } catch (e) {
+      // 用户授权之前来到主页
+      // 生成用户引导 URL 并重定向
+      const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)
+      ctx.response.redirect(url)
     }
-    // 将用户 openid 添加到 session
-    ctx.session.openid = openid
-    // 将 index.html 渲染出来
-    const indexPath = path.join(__dirname, '../index.html')
-    ctx.response.body = fs.readFileSync(indexPath).toString()
   } else if (state) {
     // 此时说明用户授权禁止
     ctx.response.body = '请给网页授权才能正常访问'

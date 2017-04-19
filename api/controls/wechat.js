@@ -40,6 +40,20 @@ const getJsConfig = function getJsConfig (params) {
 
 /**
  * 获取 JS-SDK 相关信息的接口
+ * @description 获取 JS-SDK 相关信息的接口
+ *              接口地址：GET /api/jssdk
+ *              接口参数：url {String} 当前页面的 URL
+ * @module wechat
+ * @example
+ *  {
+ *    result: 'ok',
+ *    data: {
+ *      "appId": "wx2e20dc94b401d6f8",
+ *      "timestamp": "1492573508",
+ *      "nonceStr": "v4epjonav4864al",
+ *      "signature": "067353708ebad4c78bbff6cdcc49c0ed41054b11"
+ *    }
+ *  }
  * @param  {Object}   ctx  请求与响应上下文
  * @param  {Function} next 下一个迭代器
  */

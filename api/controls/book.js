@@ -120,6 +120,12 @@ const getBookByISBN = async function getBookByISBN (ctx, next) {
 //   }
 // }
 
+/**
+ * [searchBooks description]
+ * @param  {[type]}   ctx  [description]
+ * @param  {Function} next [description]
+ * @return {[type]}        [description]
+ */
 const searchBooks = async function searchBooks (ctx, next) {
   const keyword = ctx.params.keyword
   try {
@@ -131,7 +137,17 @@ const searchBooks = async function searchBooks (ctx, next) {
         ]
       }
     )
-    console.log(books)
+    if (books) {
+      ctx.response.body = {
+        result: 'ok',
+        data: books
+      }
+    } else {
+      ctx.response.body = {
+        result: 'fail',
+        data: '没有符合条件的书'
+      }
+    }
   } catch (e) {
 
   }
@@ -139,5 +155,6 @@ const searchBooks = async function searchBooks (ctx, next) {
 
 module.exports = {
   addBook,
+  searchBooks,
   getBookByISBN
 }

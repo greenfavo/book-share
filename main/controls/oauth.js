@@ -85,7 +85,7 @@ const oauth = async function oauth (ctx, next) {
       ctx.session.userId = userData._id
       console.log(ctx.session.userId)
       // 重定向到主页
-      ctx.response.redirect('/home')
+      ctx.response.redirect('http://sharebook.sevenfan.cn:8080')
     } else {
       // 此时说明用户授权禁止
       ctx.response.body = '请给网页授权才能正常访问'

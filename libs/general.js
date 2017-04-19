@@ -15,7 +15,7 @@ const general = async function general (ctx, next) {
   let urlPath = ctx.request.path
   console.log(urlPath)
   console.log(ctx.session.userId)
-  if ((urlPath === '/' && urlPath === '/oauth') || ctx.session.userId) {
+  if (urlPath === '/' || urlPath === '/oauth' || ctx.session.userId) {
     next()
   } else {
     const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)

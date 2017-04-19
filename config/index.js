@@ -8,5 +8,6 @@ module.exports = {
   HOST: '0.0.0.0',
   SESSION: {
     key: 'koa-book-share'
-  }
+  },
+  ROUTES: ['/home']
 }

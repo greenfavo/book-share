@@ -3,6 +3,7 @@
  * @author  greenfavo@qq.com
  */
 const OAuth = require('wechat-oauth')
+const config = require('../config')
 const wechatConfig = require('../config/wechat')
 
 // 取出 config.WECHAT 中的配置
@@ -17,7 +18,7 @@ const general = async function general (ctx, next) {
   console.log(ctx.session.userId)
   if (urlPath === '/' || urlPath === '/oauth' || ctx.session.userId) {
     next()
-  } else {
+  } else if (~config.ROUTES.indexOf(urlPath)) {
     const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)
     ctx.response.redirect(url)
   }

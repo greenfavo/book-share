@@ -8,7 +8,7 @@ const userModel = require('../../models/user')
 const wechatConfig = require('../../config/wechat')
 
 // 取出 config.WECHAT 中的配置
-const { APPID, SECRET } = wechatConfig
+const { APPID, SECRET, REDIRECT_URL, STATE, SCOPE } = wechatConfig
 
 // OAuth 实例化
 const client = new OAuth(APPID, SECRET)
@@ -85,9 +85,12 @@ const oauth = async function oauth (ctx, next) {
       ctx.session.userId = userData._id
       // 重定向到主页
       ctx.response.redirect('http://sharebook.sevenfan.cn:8080/home')
-    } else {
+    } else if (state) {
       // 此时说明用户授权禁止
       ctx.response.body = '请给网页授权才能正常访问'
+    } else {
+      const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)
+      ctx.response.redirect(url)
     }
   } catch (e) {
     ctx.response.body = e

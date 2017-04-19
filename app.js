@@ -16,10 +16,13 @@ const apiRoutes = require('./api/routes')
 const adminRoutes = require('./admin/routes')
 const { PORT, HOST, SESSION } = require('./config')
 
+const usersDbPath = path.join(__dirname, 'database/users.db')
+const booksDbPath = path.join(__dirname, 'database/books.db')
+
 let app = new Koa()
 let db = {}
-db.users = new Datastore({ filename: './database/users.db' })
-db.books = new Datastore({ filename: './database/books.db' })
+db.users = new Datastore({ filename: usersDbPath, autoload: true })
+db.books = new Datastore({ filename: booksDbPath, autoload: true })
 
 app.keys = [SESSION.key]
 

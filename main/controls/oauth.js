@@ -84,6 +84,7 @@ const oauth = async function oauth (ctx, next) {
           userInfo
         ))
       }
+      console.log('userData', userData)
       // 将用户 userId 添加到 session
       ctx.session.userId = userData._id
       // 重定向到主页

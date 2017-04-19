@@ -120,6 +120,23 @@ const getBookByISBN = async function getBookByISBN (ctx, next) {
 //   }
 // }
 
+const searchBooks = async function searchBooks (ctx, next) {
+  const keyword = ctx.params.keyword
+  try {
+    let books = await ctx.db.books.find(
+      {
+        $or: [
+          {name: {$regex: new RegExp(keyword)}},
+          {author: {$regex: new RegExp(keyword)}}
+        ]
+      }
+    )
+    console.log(books)
+  } catch (e) {
+
+  }
+}
+
 module.exports = {
   addBook,
   getBookByISBN

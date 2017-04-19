@@ -29,9 +29,9 @@ const getAccessToken = function getAccessToken (code) {
       if (err) {
         reject(err)
       }
-      console.log(result)
-      const accessToken = result.data.access_token
-      const openid = result.data.openid
+
+      const accessToken = (result && result.data && result.data.access_token) || reject(new Error())
+      const openid = (result && result.data && result.data.openid) || reject(new Error())
       resolve({ accessToken, openid })
     })
   })

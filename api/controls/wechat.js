@@ -60,12 +60,11 @@ const getJsConfig = function getJsConfig (params) {
 const getJsSdk = async function getJsSdk (ctx, next) {
   let url = ctx.request.query.url
   try {
-    let ticket = await getTicket()
+    // let ticket = await getTicket()
     let params = {
-      url: url,
-      ticket: ticket.ticket
+      url: url
     }
-    console.log(ticket.ticket)
+    // console.log(ticket.ticket)
     let config = await getJsConfig(params)
     ctx.response.body = {
       result: 'ok',

@@ -6,7 +6,8 @@
       "watch": true,
       "ignore_watch": [
         "node_modules",
-        "logs"
+        "logs",
+        "database"
       ],
       "watch_options": {
         "followSymlinks": false

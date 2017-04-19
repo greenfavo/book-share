@@ -36,6 +36,17 @@ mainRoutes(mainRouter)
 apiRoutes(apiRouter)
 adminRoutes(adminRouter)
 
+app.use(async (ctx, next) => {
+  try {
+    await next()
+  } catch (err) {
+    // will only respond with JSON
+    ctx.status = err.statusCode || err.status || 500
+    ctx.body = {
+      message: err.message
+    }
+  }
+})
 // 将 db 加入 ctx 中
 app.use(async (ctx, next) => {
   ctx.db = db

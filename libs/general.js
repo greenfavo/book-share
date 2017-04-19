@@ -12,17 +12,14 @@ const { APPID, SECRET, REDIRECT_URL, STATE, SCOPE } = wechatConfig
 const client = new OAuth(APPID, SECRET)
 
 const general = async function general (ctx, next) {
-  if (ctx.request.path === '/') {
+  let urlPath = ctx.request.path
+  console.log(urlPath)
+  console.log(ctx.session.userId)
+  if ((urlPath === '/' && urlPath === '/oauth') || ctx.session.userId) {
     next()
   } else {
-    console.log(ctx.session.userId)
-    if (ctx.session.userId) {
-      next()
-    } else {
-      await next()
-      const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)
-      ctx.response.redirect(url)
-    }
+    const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)
+    ctx.response.redirect(url)
   }
 }
 

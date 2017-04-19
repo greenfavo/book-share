@@ -67,9 +67,7 @@ const oauth = async function oauth (ctx, next) {
       const userInfo = await getUser(openid)
       // 判断数据库中是否有此用户
       let userData = await ctx.db.users.findOne({ openid: openid })
-      console.log('userData', userData)
       if (userData) {
-        console.log('更新')
         // 有该用户则更新其微信信息
         await ctx.db.users.update(
           {openid: openid},
@@ -77,16 +75,15 @@ const oauth = async function oauth (ctx, next) {
         )
       } else {
         // 没有该用户则插入用户信息
-        console.log('插入')
         userData = await ctx.db.users.insert(Object.assign(
           {},
           userModel,
           userInfo
         ))
       }
-      console.log('userData', userData)
       // 将用户 userId 添加到 session
       ctx.session.userId = userData._id
+      console.log(ctx.session.userId)
       // 重定向到主页
       ctx.response.redirect('/home')
     } else {

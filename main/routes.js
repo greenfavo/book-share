@@ -9,7 +9,7 @@ const oauth = require('./controls/oauth')
 const routes = function routes (router) {
   // 微信接入验证
   router.get('/', check)
-  router.get('/oath', oauth)
+  router.get('/oauth', oauth)
   router.get('/home', home)
 }
 

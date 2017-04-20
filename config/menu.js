@@ -8,7 +8,7 @@ module.exports = {
     {
       type: 'view',
       name: '发现',
-      url: 'http://sharebook.sevenfan.cn:8080/'
+      url: 'http://sharebook.sevenfan.cn:8080/home'
     }
   ]
 }

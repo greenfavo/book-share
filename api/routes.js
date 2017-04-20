@@ -25,7 +25,7 @@ const routes = function routes (router) {
   // 新建一本图书
   router.post('/book', addBook)
   // 通过 isbn 获取一本书
-  router.get('/book/:isbn', getBookByISBN)
+  router.get('/isbn/:isbn', getBookByISBN)
 
   // 上传图片至七牛
   router.post('/image', addImage)

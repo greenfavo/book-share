@@ -56,7 +56,7 @@ const addBook = async function addBook (ctx, next) {
         summary: ctx.request.body.summary,
         cover: ctx.request.body.cover,
         area: ctx.request.body.area,
-        date: new Date().getDate(),
+        date: new Date().getTime(),
         ownerId: userId
       })
       // 更新用户的图书集合
@@ -112,7 +112,7 @@ const getBookByISBN = async function getBookByISBN (ctx, next) {
 const getBooks = async function getBooks (ctx, next) {
   try {
     let timestamp = +(ctx.request.query.timestamp) || new Date().getTime() + 1000
-    let books = await ctx.db.books.find({ date: { $lt: timestamp } }).sort({ date: -1 }).limit(20)
+    let books = await ctx.db.books.cfind({ date: { $lt: timestamp } }).sort({ date: -1 }).limit(10).exec()
     if (books) {
       ctx.response.body = {
         result: 'ok',

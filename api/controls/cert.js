@@ -48,6 +48,8 @@ const verify = function verify (ctx) {
 /**
  * 学生认证
  * @description 接口地址：POST /api/cert
+ *              接口参数：username {String} 用户名
+ *                      password {String} 密码
  *              接口请求成功返回：{result: 'ok', data: '学生认证成功'}
  *              接口请求失败返回：{result: 'fail', data: String}
  * @param {Object}   ctx  请求与响应的上下文

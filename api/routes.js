@@ -30,6 +30,9 @@ const routes = function routes (router) {
   // 发出借阅图书申请
   router.post('/propose/:bookId', propose)
 
+  // 添加一个评论
+  router.post('/comment')
+
   // 上传图片至七牛
   router.post('/image', addImage)
 }

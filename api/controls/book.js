@@ -165,6 +165,17 @@ const searchBooks = async function searchBooks (ctx, next) {
   }
 }
 
+// const addComment = function addComment (ctx, next) {
+//   let { bookId, content } = ctx.request.query
+//   try {
+//     // 获取当前用户的信息
+//     let user = await ctx.db.users.findOne({ _id: ctx.session. })
+//     // 更新图书的评论
+//   } catch (e) {
+//
+//   }
+// }
+
 module.exports = {
   addBook,
   searchBooks,

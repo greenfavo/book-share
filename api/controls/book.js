@@ -18,8 +18,7 @@ const getBookFromDouban = function getBookFromDouban (isbn) {
         reject(err)
       }
 
-      console.log(body)
-      resolve(body)
+      resolve(JSON.parse(body))
     })
   })
 }
@@ -56,6 +55,7 @@ const addBook = async function addBook (ctx, next) {
         summary: ctx.request.body.summary,
         cover: ctx.request.body.cover,
         area: ctx.request.body.area,
+        date: new Date().getDate(),
         ownerId: userId
       })
       // 更新用户的图书集合
@@ -97,20 +97,38 @@ const getBookByISBN = async function getBookByISBN (ctx, next) {
   }
 }
 
-// const getBooks = function getBooks (ctx, next) {
-//   if (ctx.session.userId) {
-//     try {
-//       let books = ctx.db.books.find()
-//     } catch (e) {
-//
-//     }
-//   } else {
-//     ctx.response.body = JSON.stringify({
-//       result: 'fail',
-//       data: '用户未登录'
-//     })
-//   }
-// }
+/**
+ * 获取所有图书的接口
+ * @description 接口地址：GET /api/books
+ *              接口参数：timestamp（可选）
+ *              接口请求成功返回：{ result: 'ok', data: books }（有书）
+ *                             { result: 'fail', data: '没有更多图书了'}（无书）
+ *              接口请求失败返回：{ result: 'fail', data: errMsg }
+ * @param  {Object}   ctx  请求与响应上下文
+ * @param  {Function} next 下一个迭代器
+ */
+const getBooks = async function getBooks (ctx, next) {
+  try {
+    let timestamp = +(ctx.request.query.timestamp) || new Date().getTime() + 1000
+    let books = await ctx.db.books.find({ date: { $lt: timestamp } }).sort({ date: -1 }).limit(20)
+    if (books) {
+      ctx.response.body = {
+        result: 'ok',
+        data: books
+      }
+    } else {
+      ctx.response.body = {
+        result: 'fail',
+        data: '没有更多图书了'
+      }
+    }
+  } catch (e) {
+    ctx.response.body = {
+      result: 'fail',
+      data: '查询数据库出现问题'
+    }
+  }
+}
 
 /**
  * [searchBooks description]
@@ -148,5 +166,6 @@ const searchBooks = async function searchBooks (ctx, next) {
 module.exports = {
   addBook,
   searchBooks,
-  getBookByISBN
+  getBookByISBN,
+  getBooks
 }

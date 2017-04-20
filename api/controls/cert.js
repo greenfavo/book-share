@@ -34,9 +34,9 @@ const verify = function verify (ctx) {
       /**
        * 如果请求返回的状态码是 302，则说明该账号是有效的
        * 如果请求返回的状态码是 200，则说明该账号是无效的
-       * @param  {String} code === '302'        账号有效的条件
+       * @param  {String} code === 302        账号有效的条件
        */
-      if (code === '302') {
+      if (code === 302) {
         resolve(true)
       } else {
         resolve(false)

@@ -20,6 +20,8 @@ const general = async function general (ctx, next) {
     await next()
     const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)
     ctx.response.redirect(url)
+  } else {
+    await next()
   }
 }
 

@@ -50,6 +50,7 @@ const addBook = async function addBook (ctx, next) {
         ISBN: ctx.request.body.ISBN,
         name: ctx.request.body.name,
         author: ctx.request.body.author,
+        translator: ctx.request.translator,
         publish: ctx.request.body.publish,
         publishDate: ctx.request.body.publishDate,
         summary: ctx.request.body.summary,

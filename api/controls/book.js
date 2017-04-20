@@ -85,10 +85,11 @@ const getBookByISBN = async function getBookByISBN (ctx, next) {
   let isbn = ctx.params.isbn
   try {
     let bookMsg = await getBookFromDouban(isbn)
-    ctx.response.body = JSON.stringify({
+    ctx.response.contentType = 'application/json'
+    ctx.response.body = {
       result: 'ok',
       data: bookMsg
-    })
+    }
   } catch (e) {
     ctx.response.body = JSON.stringify({
       result: 'fail',

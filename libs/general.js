@@ -19,7 +19,6 @@ const general = async function general (ctx, next) {
   } else if (~config.ROUTES.indexOf(urlPath)) {
     const url = client.getAuthorizeURL(REDIRECT_URL, STATE, SCOPE)
     ctx.response.redirect(url)
-    await next()
   } else {
     await next()
   }

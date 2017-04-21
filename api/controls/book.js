@@ -3,6 +3,7 @@
  * @author  greenfavo@qq.com
  */
 const request = require('request')
+const bookModel = require('../../models/book')
 
 /**
  * 通过 ISBN 从豆瓣获取图书信息
@@ -46,23 +47,26 @@ const addBook = async function addBook (ctx, next) {
         data: '该书已存在'
       })
     } else {
-      const result = await ctx.db.books.insert({
-        ISBN: ctx.request.body.ISBN,
-        name: ctx.request.body.name,
-        author: ctx.request.body.author,
-        translator: ctx.request.translator,
-        publish: ctx.request.body.publish,
-        publishDate: ctx.request.body.publishDate,
-        summary: ctx.request.body.summary,
-        cover: ctx.request.body.cover,
-        area: ctx.request.body.area,
-        date: new Date().getTime(),
-        ownerId: userId
-      })
+      const result = await ctx.db.books.insert(Object.assign(
+        {},
+        bookModel,
+        {
+          ISBN: ctx.request.body.ISBN,
+          name: ctx.request.body.name,
+          author: ctx.request.body.author,
+          translator: ctx.request.translator,
+          publish: ctx.request.body.publish,
+          summary: ctx.request.body.summary,
+          cover: ctx.request.body.cover,
+          area: ctx.request.body.area,
+          date: new Date().getTime(),
+          ownerId: userId
+        }
+      ))
       // 更新用户的图书集合
       await ctx.db.users.update(
         { _id: userId },
-        { $push: { book: result._id } }
+        { $push: { books: result._id } }
       )
       ctx.response.body = JSON.stringify({
         result: 'ok',
@@ -134,7 +138,7 @@ const getBooks = async function getBooks (ctx, next) {
 
 /**
  * 获取一本书的接口
- * @description 接口地址：GET /api/book/:bookId
+ * @description 接口地址：GET /api/book
  *              接口请求成功返回：{ result: 'ok', data: book }
  *              接口请求失败返回：{ result: 'fail', data: '查询数据库出现问题' }
  * @param {*} ctx  请求与响应上下文
@@ -142,13 +146,24 @@ const getBooks = async function getBooks (ctx, next) {
  */
 const getBook = async function getBook (ctx, next) {
   try {
-    let bookId = ctx.params.boodId
+    let bookId = ctx.request.query.bookId
     let book = await ctx.db.books.findOne({
       _id: bookId
     })
+    let user = await ctx.db.users.findOne({
+      _id: book.ownerId
+    })
+    let userMsg = {
+      ownerName: user.nickname,
+      headimgurl: user.headimgurl
+    }
     ctx.response.body = {
       result: 'ok',
-      data: book
+      data: Object.assign(
+        {},
+        userMsg,
+        book
+      )
     }
   } catch (error) {
     ctx.response.body = {

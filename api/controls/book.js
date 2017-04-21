@@ -133,6 +133,32 @@ const getBooks = async function getBooks (ctx, next) {
 }
 
 /**
+ * 获取一本书的接口
+ * @description 接口地址：GET /api/book/:bookId
+ *              接口请求成功返回：{ result: 'ok', data: book }
+ *              接口请求失败返回：{ result: 'fail', data: '查询数据库出现问题' }
+ * @param {*} ctx  请求与响应上下文
+ * @param {*} next 下一个迭代器
+ */
+const getBook = async function getBook (ctx, next) {
+  try {
+    let bookId = ctx.params.boodId
+    let book = await ctx.db.books.findOne({
+      _id: bookId
+    })
+    ctx.response.body = {
+      result: 'ok',
+      data: book
+    }
+  } catch (error) {
+    ctx.response.body = {
+      result: 'fail',
+      data: '查询数据库出现问题'
+    }
+  }
+}
+
+/**
  * [searchBooks description]
  * @param  {[type]}   ctx  [description]
  * @param  {Function} next [description]
@@ -165,20 +191,53 @@ const searchBooks = async function searchBooks (ctx, next) {
   }
 }
 
-// const addComment = function addComment (ctx, next) {
-//   let { bookId, content } = ctx.request.query
-//   try {
-//     // 获取当前用户的信息
-//     let user = await ctx.db.users.findOne({ _id: ctx.session. })
-//     // 更新图书的评论
-//   } catch (e) {
-//
-//   }
-// }
+/**
+ * 添加评论的接口
+ * @description 接口地址：POST /api/comment
+ *              接口参数：bookId {String} 书的ID
+ *                      content {String} 评论内容
+ *              接口请求成功返回：{ result: 'ok', data: '添加评论成功' }
+ *              接口请求失败返回：{ result: 'fail', data: '添加评论失败' }
+ * @param {Object} ctx 请求与响应上下文
+ * @param {Function} next 下一个迭代器
+ */
+const addComment = async function addComment (ctx, next) {
+  let { bookId, content } = ctx.request.query
+  try {
+    // 获取当前用户的信息
+    let user = await ctx.db.users.findOne({ _id: ctx.session.userId })
+    // 更新图书的评论
+    await ctx.db.books.update(
+      { _id: bookId },
+      {
+        $push: {
+          comments: {
+            userId: user._id,
+            userName: user.nickname,
+            headimage: user.headimage,
+            content: content,
+            date: new Date().getTime()
+          }
+        }
+      }
+    )
+    ctx.response.body = {
+      result: 'ok',
+      data: '添加评论成功'
+    }
+  } catch (e) {
+    ctx.response.body = {
+      result: 'fail',
+      data: '添加评论失败'
+    }
+  }
+}
 
 module.exports = {
   addBook,
+  addComment,
   searchBooks,
   getBookByISBN,
-  getBooks
+  getBooks,
+  getBook
 }

@@ -174,10 +174,12 @@ const getBook = async function getBook (ctx, next) {
 }
 
 /**
- * [searchBooks description]
- * @param  {[type]}   ctx  [description]
- * @param  {Function} next [description]
- * @return {[type]}        [description]
+ * 搜索图书的接口
+ * @description 接口地址：GET /api/books/:keyword
+ *              接口请求成功返回：{ result: 'ok', data: books }
+ *              接口请求失败返回：{ result: 'fail', data: String }
+ * @param  {Object}   ctx  请求与响应的上下文
+ * @param  {Function} next 下一个迭代器
  */
 const searchBooks = async function searchBooks (ctx, next) {
   const keyword = ctx.params.keyword
@@ -202,7 +204,10 @@ const searchBooks = async function searchBooks (ctx, next) {
       }
     }
   } catch (e) {
-
+    ctx.response.body = {
+      result: 'fail',
+      data: '查询数据库错误'
+    }
   }
 }
 
@@ -217,7 +222,7 @@ const searchBooks = async function searchBooks (ctx, next) {
  * @param {Function} next 下一个迭代器
  */
 const addComment = async function addComment (ctx, next) {
-  let { bookId, content } = ctx.request.query
+  let { bookId, content } = ctx.request.body
   try {
     // 获取当前用户的信息
     let user = await ctx.db.users.findOne({ _id: ctx.session.userId })
@@ -229,7 +234,7 @@ const addComment = async function addComment (ctx, next) {
           comments: {
             userId: user._id,
             userName: user.nickname,
-            headimage: user.headimage,
+            headimgurl: user.headimgurl,
             content: content,
             date: new Date().getTime()
           }

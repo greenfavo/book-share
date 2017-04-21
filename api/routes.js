@@ -5,7 +5,7 @@
 const { getJsSdk } = require('./controls/wechat')
 const { getUserInfo } = require('./controls/user-info')
 const { addUserCert, cancelUserCert } = require('./controls/cert')
-const { getBooks, getBook, addBook, getBookByISBN, searchBooks } = require('./controls/book')
+const { getBooks, getBook, addBook, getBookByISBN, searchBooks, addComment } = require('./controls/book')
 const { addImage } = require('./controls/image')
 const { propose } = require('./controls/propose')
 
@@ -33,7 +33,7 @@ const routes = function routes (router) {
   router.post('/propose/:bookId', propose)
 
   // 添加一个评论
-  router.post('/comment')
+  router.post('/comment', addComment)
 
   // 上传图片至七牛
   router.post('/image', addImage)

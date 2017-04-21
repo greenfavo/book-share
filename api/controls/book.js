@@ -227,23 +227,24 @@ const addComment = async function addComment (ctx, next) {
     // 获取当前用户的信息
     let user = await ctx.db.users.findOne({ _id: ctx.session.userId })
     // 更新图书的评论
+    let comment = {
+      userId: user._id,
+      userName: user.nickname,
+      headimgurl: user.headimgurl,
+      content: content,
+      date: new Date().getTime()
+    }
     await ctx.db.books.update(
       { _id: bookId },
       {
         $push: {
-          comments: {
-            userId: user._id,
-            userName: user.nickname,
-            headimgurl: user.headimgurl,
-            content: content,
-            date: new Date().getTime()
-          }
+          comments: comment
         }
       }
     )
     ctx.response.body = {
       result: 'ok',
-      data: '添加评论成功'
+      data: comment
     }
   } catch (e) {
     ctx.response.body = {

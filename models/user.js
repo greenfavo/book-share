@@ -5,7 +5,6 @@
 
 module.exports = {
   // 默认有 _id
-  _id: '',
   // 主要内容
   verify: false,  // 是否学生认证
   books: [],  // 用户的书的 ID

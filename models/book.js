@@ -5,7 +5,6 @@
 
 module.exports = {
   // 默认有 _id
-  _id: '',
   // 主要内容
   ISBN: '',
   name: '',
@@ -16,5 +15,6 @@ module.exports = {
   area: '',
   date: '',
   comments: [],
-  ownerId: ''  // 图书所有者 ID
+  // 图书所有者 ID
+  ownerId: ''
 }

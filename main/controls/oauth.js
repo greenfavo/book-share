@@ -83,6 +83,14 @@ const oauth = async function oauth (ctx, next) {
       }
       // 将用户 userId 添加到 session
       ctx.session.userId = userData._id
+      let options = {
+        httpOnly: false
+      }
+      ctx.cookies.set('userId', userData._id, options)
+      ctx.cookies.set('nickname', userData.nickname, options)
+      ctx.cookies.set('headimgurl', userData.headimgurl, options)
+      ctx.cookies.set('verify', userData.verify, options)
+      ctx.cookies.set('score', userData.score, options)
       // 重定向到主页
       ctx.response.redirect('http://sharebook.sevenfan.cn:8080/home')
     } else if (state) {

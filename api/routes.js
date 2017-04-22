@@ -7,7 +7,7 @@ const { getUserInfo } = require('./controls/user-info')
 const { addUserCert, cancelUserCert } = require('./controls/cert')
 const { getBooks, getUserBooks, getBook, addBook, getBookByISBN, searchBooks, addComment } = require('./controls/book')
 const { addImage } = require('./controls/image')
-const { propose } = require('./controls/propose')
+const { propose, getPropose, apply } = require('./controls/propose')
 
 const routes = function routes (router) {
   // JSSDK 验证
@@ -35,6 +35,10 @@ const routes = function routes (router) {
   router.get('/isbn/:isbn', getBookByISBN)
   // 发出借阅图书申请
   router.post('/propose/:bookId', propose)
+  // 获取借阅列表
+  router.get('/proposes', getPropose)
+  // 处理借阅
+  router.post('/apply/:borrowUserId/:borrowBookId', apply)
 
   // 添加一个评论
   router.post('/comment', addComment)

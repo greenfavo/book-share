@@ -19,24 +19,31 @@
  */
 const propose = async function propose (ctx, next) {
   try {
-    let bookId = ctx.request.params.bookId
+    let bookId = ctx.params.bookId
+    let borrowUser = await ctx.db.users.findOne({ _id: ctx.session.userId })
     let book = await ctx.db.books.findOne({ _id: bookId })
     // 图书的主人
     let ownerId = book.ownerId
     // 构造图书请求
     let propose = {
       borrowUserId: ctx.session.userId,
-      borrowBookId: bookId
+      borrowUserName: borrowUser.nickname,
+      borrowUserHead: borrowUser.headimgurl,
+      borrowBookId: bookId,
+      borrowBookName: book.name,
+      borrowBookCover: book.cover,
+      borrowBookAuthor: book.author
     }
     // 更新图书主人的请求列表
     await ctx.db.users.update(
       { '_id': ownerId },
       {
         $push: {
-          propose
+          proposes: propose
         }
       }
     )
+
     // 返回请求
     ctx.response.body = {
       result: 'ok',
@@ -63,30 +70,30 @@ const apply = async function apply (ctx, next) {
   // 当前用户
   let userId = ctx.session.userId
   // 获取借阅请求的借阅者 ID，图书 ID
-  let borrowUserId = ctx.request.userId
-  let borrowBookId = ctx.request.borrowBookId
+  let borrowUserId = ctx.params.borrowUserId
+  let borrowBookId = ctx.params.borrowBookId
   // 从用户请求列表中过滤出符合条件的请求
   let user = await ctx.db.users.findOne({ _id: userId })
   let propose = user.proposes.filter(item => {
-    return item.userId === borrowUserId && item.bookId === borrowBookId
+    return item.borrowUserId === borrowUserId && item.borrowBookId === borrowBookId
   })
   if (propose.length > 0) {
     propose = propose[0]
     // 更新图书状态
     await ctx.db.books.update(
-      { _id: propose.bookId },
+      { _id: propose.borrowBookId },
       { $set: { status: '借出' } }
     )
     // 更新借阅者借阅图书
     await ctx.db.users.update(
-      { _id: propose.userId },
-      { $push: { borrows: propose.bookId } }
+      { _id: propose.borrowUserId },
+      { $push: { borrows: propose.borrowBookId } }
     )
     // 更新用户借出图书
     await ctx.db.users.update(
       { _id: userId },
       {
-        $push: { lends: propose.bookId },
+        $push: { lends: propose.borrowBookId },
         $pull: { proposes: { borrowUserId, borrowBookId } }
       }
     )

@@ -137,6 +137,56 @@ const getBooks = async function getBooks (ctx, next) {
 }
 
 /**
+ * 用户未借阅的图书接口
+ * @description 接口地址：GET /api/books/user/:userId
+ * @param {Object} ctx 请求和响应上下文
+ * @param {Function} next 下一个迭代器
+ */
+const getUserBooks = async function getUserBooks (ctx, next) {
+  let userId = ctx.params.userId
+  let type = ctx.request.query.type
+
+  try {
+    if (type === 'borrow') {
+      // 查询用户借阅的书
+      let user = await ctx.db.users.findOne({ _id: userId })
+      // 借阅的书的 ID
+      let borrows = user.borrows
+      let books = await ctx.db.books.find(
+        { _id: { $in: borrows } }
+      )
+      ctx.response.body = {
+        result: 'ok',
+        data: books
+      }
+    } else if (type === 'lend') {
+      // 查询用户借出的书
+      let books = await ctx.db.books.find(
+        { ownerId: userId, status: '借出' }
+      )
+      ctx.response.body = {
+        result: 'ok',
+        data: books
+      }
+    } else {
+      // 查询用户的未借阅的书
+      let books = await ctx.db.books.find(
+        { ownerId: userId, status: '可借' }
+      )
+      ctx.response.body = {
+        result: 'ok',
+        data: books
+      }
+    }
+  } catch (error) {
+    ctx.response.body = {
+      result: 'fail',
+      data: '查询数据库出现问题'
+    }
+  }
+}
+
+/**
  * 获取一本书的接口
  * @description 接口地址：GET /api/book
  *              接口请求成功返回：{ result: 'ok', data: book }
@@ -260,5 +310,6 @@ module.exports = {
   searchBooks,
   getBookByISBN,
   getBooks,
+  getUserBooks,
   getBook
 }

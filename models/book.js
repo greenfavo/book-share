@@ -14,6 +14,7 @@ module.exports = {
   cover: '',
   area: '',
   date: '',
+  status: '可借',
   comments: [],
   // 图书所有者 ID
   ownerId: ''

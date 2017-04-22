@@ -5,7 +5,7 @@
 const { getJsSdk } = require('./controls/wechat')
 const { getUserInfo } = require('./controls/user-info')
 const { addUserCert, cancelUserCert } = require('./controls/cert')
-const { getBooks, getBook, addBook, getBookByISBN, searchBooks, addComment } = require('./controls/book')
+const { getBooks, getUserBooks, getBook, addBook, getBookByISBN, searchBooks, addComment } = require('./controls/book')
 const { addImage } = require('./controls/image')
 const { propose } = require('./controls/propose')
 
@@ -23,6 +23,10 @@ const routes = function routes (router) {
   // 获取所有图书
   router.get('/books', getBooks)
   router.get('/books/:keyword', searchBooks)
+
+  // 获取某个用户的所有图书
+  router.get('/books/user/:userId', getUserBooks)
+
   // 新建一本图书
   router.post('/book', addBook)
   // 获取一本书

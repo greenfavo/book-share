@@ -145,7 +145,8 @@ const getBooks = async function getBooks (ctx, next) {
 const getUserBooks = async function getUserBooks (ctx, next) {
   let userId = ctx.params.userId
   let type = ctx.request.query.type
-
+  console.log(userId)
+  console.log(type)
   try {
     if (type === 'borrow') {
       // 查询用户借阅的书

@@ -82,7 +82,7 @@ const apply = async function apply (ctx, next) {
     // 更新图书状态
     await ctx.db.books.update(
       { _id: propose.borrowBookId },
-      { $set: { status: '借出' } }
+      { $set: { status: '借出', borrowDate: new Date().getTime() } }
     )
     // 更新借阅者借阅图书
     await ctx.db.users.update(

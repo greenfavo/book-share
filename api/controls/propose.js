@@ -158,7 +158,7 @@ const getPropose = async function getPropose (ctx, next) {
   try {
     let userId = ctx.session.userId
     let user = await ctx.db.users.findOne({ _id: userId })
-    let proposes = user.proposes
+    let proposes = user.messages
     ctx.response.body = {
       result: 'ok',
       data: proposes

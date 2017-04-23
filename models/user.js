@@ -12,6 +12,7 @@ module.exports = {
   lends: [],  // 借出的书的ID
   score: 100,  // 积分
   proposes: [],  // 接收到的借书申请
+  messages: [],
   // 微信的信息
   openid: '',
   nickname: '',

@@ -37,7 +37,8 @@ const propose = async function propose (ctx, next) {
       borrowBookName: book.name,
       borrowBookCover: book.cover,
       borrowBookAuthor: book.author,
-      date: new Date().getTime()
+      date: new Date().getTime(),
+      type: '借阅'
     }
     // 更新图书主人的请求列表
     await ctx.db.users.update(

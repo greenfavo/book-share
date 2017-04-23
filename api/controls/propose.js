@@ -58,7 +58,7 @@ const propose = async function propose (ctx, next) {
         color: '#000'
       },
       lendUserName: {
-        value: ctx.session.userId,
+        value: borrowUser.nickname,
         color: '#000'
       },
       bookName: {
@@ -74,6 +74,10 @@ const propose = async function propose (ctx, next) {
         color: '#000'
       }
     }
+    console.log(ownerUser.openid)
+    console.log(templateId)
+    console.log(url)
+    console.log(data)
     api.sendTemplate(ownerUser.openid, templateId, url, data)
     // 返回请求
     ctx.response.body = {

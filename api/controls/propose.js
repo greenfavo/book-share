@@ -36,7 +36,8 @@ const propose = async function propose (ctx, next) {
       borrowBookId: bookId,
       borrowBookName: book.name,
       borrowBookCover: book.cover,
-      borrowBookAuthor: book.author
+      borrowBookAuthor: book.author,
+      date: new Date().getTime()
     }
     // 更新图书主人的请求列表
     await ctx.db.users.update(
@@ -147,7 +148,7 @@ const apply = async function apply (ctx, next) {
 /**
  * 获取当前用户借阅申请信息
  * @description 接口地址：GET /api/proposes
- *              接口请求成功返回：{ result: 'ok', data: Object }
+ *              接口请求成功返回：{ result: 'ok', data: Array }
  *              接口请求失败返回：{ result: 'fail', data: '获取用户借阅申请失败' }
  * @param  {Object}   ctx  请求与响应上下文
  * @param  {Function} next 下一个迭代器

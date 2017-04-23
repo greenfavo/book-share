@@ -2,6 +2,10 @@
  * @file    发出借阅申请和处理借阅申请的 API
  * @author  greenfavo@qq.com
  */
+const config = require('../../config/wechat')
+const Wechat = require('wechat-api')
+
+const api = new Wechat(config.APPID, config.SECRET)
 
 /**
  * 向图书主人发起借阅申请的 API
@@ -43,7 +47,34 @@ const propose = async function propose (ctx, next) {
         }
       }
     )
-
+    // 获取主人的信息
+    let ownerUser = await ctx.db.users.findOne({ _id: ownerId })
+    // 发送模版消息
+    let templateId = 'ZoqxRrIujE4e-dWTewQG8RDx-0Oi8Kr9LgCOjCRXT20'
+    let url = '/home#/notify'
+    let data = {
+      first: {
+        value: '有人想借你的书',
+        color: '#000'
+      },
+      lendUserName: {
+        value: ctx.session.userId,
+        color: '#000'
+      },
+      bookName: {
+        value: book.name,
+        color: '#000'
+      },
+      bookAuthor: {
+        value: book.author,
+        color: '#000'
+      },
+      end: {
+        value: '点击查看详情',
+        color: '#000'
+      }
+    }
+    api.sendTemplate(ownerUser.openid, templateId, url, data)
     // 返回请求
     ctx.response.body = {
       result: 'ok',

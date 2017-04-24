@@ -210,13 +210,25 @@ const processMessage = async function processMessage (ctx, next) {
         )
       }
     } else {
-      let organizer = await ctx.db.users.findOne({ _id: organizerId })      
+      let organizer = await ctx.db.users.findOne({ _id: organizerId })
+      let book = await ctx.db.books.findOne({ _id: bookId })      
       if (type === '还书审核') {
         // 1. 发起者积分减十
         await ctx.db.users.update(
           { _id: organizerId },
           { $set: { score: organizer.score - 10 } }
         )
+      } else if (type === '借阅') {
+        // 发送模版消息告诉发起者拒绝借阅
+        let data = {
+          first: '图书主人拒绝借书',
+          lendUserName: organizer.nickname,
+          bookName: book.name,
+          bookAuthor: book.author,
+          end: '点击查看详情',
+          url: ''
+        }
+        postTemplateMessage(organizer.openid, data)
       }
     }
 

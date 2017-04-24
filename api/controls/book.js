@@ -117,7 +117,7 @@ const getBooks = async function getBooks (ctx, next) {
   try {
     let timestamp = +(ctx.request.query.timestamp) || new Date().getTime() + 1000
     let books = await ctx.db.books.cfind({ date: { $lt: timestamp } }).sort({ date: -1 }).limit(10).exec()
-    if (books) {
+    if (books && books.length) {
       ctx.response.body = {
         result: 'ok',
         data: books

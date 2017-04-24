@@ -55,6 +55,7 @@ const postTemplateMessage = function postTemplateMessage (openid, data) {
  */
 const generteMessage = async function generteMessage (ctx, next) {
   let { organizerId, receiverId, bookId, type, content } = ctx.request.body
+  organizerId = organizerId || ctx.session.userId
   let messageType = type
 
   try {

@@ -223,6 +223,32 @@ const getBook = async function getBook (ctx, next) {
 }
 
 /**
+ * 删除图书的接口
+ * @description 接口地址：DELETE /api/book/:bookId
+ */
+const deleteBook = async function deleteBook (ctx, next) {
+  let bookId = ctx.params.bookId
+  try {
+    // 删除当前用户的图书 ID
+    await ctx.db.users.update(
+      { _id: ctx.session.userId },
+      { $pull: { books: bookId } }
+    )
+    // 删除那本图书
+    await ctx.db.books.remove({ _id: bookId })
+    ctx.response.body = {
+      result: 'ok',
+      data: '图书已删除'
+    }
+  } catch (error) {
+    ctx.response.body = {
+      result: 'fail',
+      data: '操作数据库出现错误'
+    }
+  }
+}
+
+/**
  * 搜索图书的接口
  * @description 接口地址：GET /api/books/:keyword
  *              接口请求成功返回：{ result: 'ok', data: books }
@@ -305,6 +331,7 @@ const addComment = async function addComment (ctx, next) {
 
 module.exports = {
   addBook,
+  deleteBook,
   addComment,
   searchBooks,
   getBookByISBN,

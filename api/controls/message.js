@@ -81,6 +81,7 @@ const generteMessage = async function generteMessage (ctx, next) {
       // 1. 构建发起者信息对象
       let organizerMessage = {
         bookId,
+        book,
         organizerId,
         receiverId,
         organizer,

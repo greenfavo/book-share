@@ -8,7 +8,7 @@ const { addUserCert, cancelUserCert } = require('./controls/cert')
 const { getBooks, getUserBooks, getBook, addBook, getBookByISBN, searchBooks, addComment } = require('./controls/book')
 const { addImage } = require('./controls/image')
 const { propose, getPropose, apply } = require('./controls/propose')
-const { generteMessage, processMessage } = require('./controls/message')
+const { generteMessage, processMessage, getBookStatus } = require('./controls/message')
 
 const routes = function routes (router) {
   // JSSDK 验证
@@ -49,6 +49,7 @@ const routes = function routes (router) {
 
   router.post('/message', generteMessage)
   router.post('/message/process', processMessage)
+  router.get('/bookstatus/:bookId/:userId', getBookStatus)
 }
 
 module.exports = routes

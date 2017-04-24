@@ -17,6 +17,11 @@ let messageMap = {
   '评论': '有人评论了你'
 }
 
+/**
+ * 发送模版消息
+ * @param {String} openid openId
+ * @param {Object} data 消息数据
+ */
 const postTemplateMessage = function postTemplateMessage (openid, data) {
   let templateId = '3oySybSjzVaQabxP6Y9xB7ZQNWo71IT4cINykPFVhJ8'
   let url = 'http://sharebook.sevenfan.cn:8080/home#/notify'
@@ -236,7 +241,55 @@ const processMessage = async function processMessage (ctx, next) {
   }
 }
 
+/**
+ * 获取图书状态的接口
+ * @description 接口地址：GET /api/bookstatus/:bookId/:userId
+ * @param {String} bookId 图书ID
+ * @param {String} userId 用户ID，默认是当前用户
+ */
+const getBookStatus = async function getBookStatus (ctx, next) {
+  let bookId = ctx.params.bookId
+  let userId = ctx.params.userId || ctx.session.userId
+  try {
+    let user = await ctx.db.users.findOne({ _id: userId })
+    let messages = user.messages
+    // 找出发起者是用户自己并且有那本书的消息
+    let bookMessages = messages.filter(message => {
+      return message.bookId === bookId && message.organizerId === userId
+    })
+    if (bookMessages.length) {
+      let result
+      let bookMessage = bookMessages[0]
+      switch (bookMessage.type) {
+        case '借阅申请':
+          result = '本书正在借阅中'
+          break
+        case '还书申请':
+          result = '本书正在归还中'
+          break
+        default:
+          result = ''
+      }
+      ctx.response.body = {
+        result: 'ok',
+        data: result
+      }
+    } else {
+      ctx.response.body = {
+        result: 'fail',
+        data: '本书处于正常状态'
+      }
+    }
+  } catch (error) {
+    ctx.response.body = {
+      result: 'fail',
+      data: error
+    }
+  }
+}
+
 module.exports = {
   generteMessage,
-  processMessage
+  processMessage,
+  getBookStatus
 }

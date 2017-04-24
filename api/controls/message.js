@@ -23,7 +23,7 @@ let messageMap = {
  * @param {Object} data 消息数据
  */
 const postTemplateMessage = function postTemplateMessage (openid, data) {
-  let templateId = '3oySybSjzVaQabxP6Y9xB7ZQNWo71IT4cINykPFVhJ8'
+  let templateId = 'bHShR6gfyCI-qhj8Ur90efhcupUdH1MUdRODkvE3Xos'
   let url = 'http://sharebook.sevenfan.cn:8080/home#/notify'
   if (data.url) {
     url = data.url

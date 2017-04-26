@@ -12,6 +12,28 @@ const fs = require('fs')
  * @param  {Function} next 下一个迭代器
  */
 const home = async function home (ctx, next) {
+  let userId = ctx.session.userId
+  if (userId) {
+    try {
+      let userData = await ctx.db.users.findOne({ _id: userId })
+      let options = {
+        httpOnly: false
+      }
+      if (userData) {
+        ctx.cookies.set('userId', userData._id, options)
+        ctx.cookies.set('nickname', userData.nickname, options)
+        ctx.cookies.set('headimgurl', userData.headimgurl, options)
+        ctx.cookies.set('verify', userData.verify, options)
+        ctx.cookies.set('score', userData.score, options)
+      } else {
+        console.log('数据库中不存在该用户')
+      }
+    } catch (error) {
+      console.log('数据库查询失败')
+    }
+  } else {
+    console.log('session 不存在')
+  }
   // 将 index.html 渲染出来
   const indexPath = path.join(__dirname, '../index.html')
   ctx.response.body = fs.readFileSync(indexPath).toString()

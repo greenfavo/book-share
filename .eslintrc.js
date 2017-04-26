@@ -9,5 +9,9 @@ module.exports = {
   // 加入 ES6 解析
   parser: 'babel-eslint',
   // 规则
-  extends: 'standard'
+  extends: 'standard',
+  plugins: ['mocha'],
+  rules: {
+    "mocha/no-exclusive-tests": "error"
+  }
 }

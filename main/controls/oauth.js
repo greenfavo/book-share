@@ -77,6 +77,17 @@ const getUser = function getUser (openid) {
   })
 }
 
+const refreshAccessToken = function refreshAccessToken (refreshToken) {
+  return new Promise(function refreshAccessTokenDetail (resolve, reject) {
+    client.refreshAccessToken(refreshToken, function (err, result) {
+      if (err) {
+        reject(err)
+      }
+      resolve(result)
+    })
+  })
+}
+
 /**
  * 用户授权认证
  * @param  {Object}   ctx  请求与响应上下文
@@ -87,7 +98,8 @@ const oauth = async function oauth (ctx, next) {
     const { code, state } = ctx.request.query
     if (code && state) {
       // 此时说明处于用户授权通过，就用 code 获取 openid
-      const { openid } = await getAccessToken(code)
+      const { openid, refresh_token } = await getAccessToken(code)
+      await refreshAccessToken(refresh_token)
       // 通过 openid 获取用户信息
       const userInfo = await getUser(openid)
       // 判断数据库中是否有此用户

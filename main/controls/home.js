@@ -14,8 +14,10 @@ const fs = require('fs')
 const home = async function home (ctx, next) {
   let userId = ctx.session.userId
   if (userId) {
+    console.log('userId', userId)
     try {
       let userData = await ctx.db.users.findOne({ _id: userId })
+      console.log('userData', userData)
       let options = {
         httpOnly: false
       }

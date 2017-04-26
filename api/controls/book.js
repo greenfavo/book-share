@@ -196,16 +196,25 @@ const getUserBooks = async function getUserBooks (ctx, next) {
 const getBook = async function getBook (ctx, next) {
   try {
     let bookId = ctx.request.query.bookId
+    console.log(bookId)
     let book = await ctx.db.books.findOne({
       _id: bookId
     })
+    console.log(book)
     let user = await ctx.db.users.findOne({
       _id: book.ownerId
     })
+    console.log(user)
     let userMsg = {
       ownerName: user.nickname,
       headimgurl: user.headimgurl
     }
+    console.log(userMsg)
+    console.log(Object.assign(
+        {},
+        userMsg,
+        book
+      ))
     ctx.response.body = {
       result: 'ok',
       data: Object.assign(

@@ -19,7 +19,8 @@ const home = async function home (ctx, next) {
       let userData = await ctx.db.users.findOne({ _id: userId })
       console.log('userData', userData)
       let options = {
-        httpOnly: false
+        httpOnly: false,
+        overwrite: true
       }
       if (userData) {
         ctx.cookies.set('userId', userData._id, options)

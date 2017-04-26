@@ -29,7 +29,7 @@ const home = async function home (ctx, next) {
         console.log('数据库中不存在该用户')
       }
     } catch (error) {
-      console.log('数据库查询失败')
+      console.log('数据库查询失败', error)
     }
   } else {
     console.log('session 不存在')

@@ -2,9 +2,9 @@
  * @file  微信用户授权
  * @author  greenfavo@qq.com
  */
-const path = require('path')
+// const path = require('path')
 const OAuth = require('wechat-oauth')
-const Datastore = require('nedb-promise')
+// const Datastore = require('nedb-promise')
 // 个人依赖
 const userModel = require('../../models/user')
 const wechatConfig = require('../../config/wechat')
@@ -12,31 +12,32 @@ const wechatConfig = require('../../config/wechat')
 // 取出 config.WECHAT 中的配置
 const { APPID, SECRET, REDIRECT_URL, STATE, SCOPE } = wechatConfig
 
-// 存取 access_token 的数据库
-const tokenDbPath = path.join(__dirname, '../../database/tokens.db')
-const tokenDb = new Datastore({ filename: tokenDbPath, autoload: true })
+// // 存取 access_token 的数据库
+// const tokenDbPath = path.join(__dirname, '../../database/tokens.db')
+// const tokenDb = new Datastore({ filename: tokenDbPath, autoload: true })
 // OAuth 实例化
-const client = new OAuth(APPID, SECRET, async function (openid, callback) {
-  // 传入一个根据openid获取对应的全局token的方法
-  // 在getUser时会通过该方法来获取token
-  try {
-    let result = tokenDb.findOne({ openid: openid })
-    return callback(null, result)
-  } catch (error) {
-    throw error
-  }
-}, async function (openid, token, callback) {
-  // 持久化时请注意，每个openid都对应一个唯一的token!
-  // 有则更新，无则添加
-  let query = { openid: openid }
-  let options = { upsert: true }
-  try {
-    await tokenDb.update(query, token, options)
-    return callback(null)
-  } catch (error) {
-    throw error
-  }
-})
+const client = new OAuth(APPID, SECRET)
+// const client = new OAuth(APPID, SECRET, async function (openid, callback) {
+//   // 传入一个根据openid获取对应的全局token的方法
+//   // 在getUser时会通过该方法来获取token
+//   try {
+//     let result = tokenDb.findOne({ openid: openid })
+//     return callback(null, result)
+//   } catch (error) {
+//     throw error
+//   }
+// }, async function (openid, token, callback) {
+//   // 持久化时请注意，每个openid都对应一个唯一的token!
+//   // 有则更新，无则添加
+//   let query = { openid: openid }
+//   let options = { upsert: true }
+//   try {
+//     await tokenDb.update(query, token, options)
+//     return callback(null)
+//   } catch (error) {
+//     throw error
+//   }
+// })
 
 /**
  * 获取 accessToken Promise 化
@@ -77,16 +78,16 @@ const getUser = function getUser (openid) {
   })
 }
 
-const refreshAccessToken = function refreshAccessToken (refreshToken) {
-  return new Promise(function refreshAccessTokenDetail (resolve, reject) {
-    client.refreshAccessToken(refreshToken, function (err, result) {
-      if (err) {
-        reject(err)
-      }
-      resolve(result)
-    })
-  })
-}
+// const refreshAccessToken = function refreshAccessToken (refreshToken) {
+//   return new Promise(function refreshAccessTokenDetail (resolve, reject) {
+//     client.refreshAccessToken(refreshToken, function (err, result) {
+//       if (err) {
+//         reject(err)
+//       }
+//       resolve(result)
+//     })
+//   })
+// }
 
 /**
  * 用户授权认证
@@ -98,8 +99,7 @@ const oauth = async function oauth (ctx, next) {
     const { code, state } = ctx.request.query
     if (code && state) {
       // 此时说明处于用户授权通过，就用 code 获取 openid
-      const { openid, refresh_token } = await getAccessToken(code)
-      await refreshAccessToken(refresh_token)
+      const { openid } = await getAccessToken(code)
       // 通过 openid 获取用户信息
       const userInfo = await getUser(openid)
       // 判断数据库中是否有此用户

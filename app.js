@@ -64,4 +64,6 @@ app.use(apiRouter.middleware())
 app.use(adminRouter.middleware())
 
 // 启动服务器
-app.listen(PORT, HOST, () => console.log('服务器启动在' + PORT + '端口'))
+let server = app.listen(PORT, HOST, () => console.log('服务器启动在' + PORT + '端口'))
+
+module.exports = server

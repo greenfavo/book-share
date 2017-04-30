@@ -6,7 +6,8 @@
   "scripts": {
     "start": "pm2 start pm2.config.json",
     "menu": "node script/menu.js",
-    "fix": "node script/fix.js"
+    "fix": "node script/fix.js",
+    "test": "mocha --recursive --growl --reporter  mochawesome ./test/*"
   },
   "repository": "git@github.com:greenfavo/share_api.git",
   "author": "greenfavo",
@@ -33,6 +34,8 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^3.3.0",
+    "supertest": "^3.0.0"
   }
 }
